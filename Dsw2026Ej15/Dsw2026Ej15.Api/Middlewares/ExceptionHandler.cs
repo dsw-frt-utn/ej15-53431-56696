@@ -1,4 +1,4 @@
-﻿using Dsw2026Ej15.Domain.Exceptions;
+﻿using Dsw2026Ej15.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
@@ -24,7 +24,7 @@ namespace Dsw2026Ej15.Api.Middlewares
             }
             catch (Exception e)
             {
-                logger.LogError(e, "Excepción capturada: {ExceptionType}", e.GetType().Name);
+                _logger.LogError(e, "Excepción capturada: {ExceptionType}", e.GetType().Name);
                 await HandleExceptionAsync(context, e);
             }
         }
@@ -36,7 +36,7 @@ namespace Dsw2026Ej15.Api.Middlewares
             var statusCode = e switch
             {
                 ValidationException => HttpStatusCode.BadRequest,
-                 => HttpStatusCode.InternalServerError
+                _ => HttpStatusCode.InternalServerError
             };
 
             context.Response.StatusCode = (int)statusCode;
